@@ -43,42 +43,42 @@ var angle = function(p1, p2) {
     return theta;
 };
 
+var diamond = function() {
+    return [
+        [150, 50],
+        [250, 150],
+        [150, 250],
+        [50, 150]
+    ];
+};
+
+var scaleneTriangle = function() {
+    return [
+        [50, 110],
+        [250, 140],
+        [10, 200]
+    ];
+};
+
+var equilateralTriangle = function() {
+    var r = 100;
+    var points = [];
+    var i, theta;
+    for (i = 0; i < 3; i += 1) {
+        theta = Math.PI / 2 + i * (2 * Math.PI / 3);
+        points.push([200 + r * Math.cos(theta), 200 + r * Math.sin(theta)]);
+    }
+    return points;
+};
+
 var snowflake = function(iterations) {
-    var base = function() {
-        //* Equilateral triangle
-        var r = 100;
-        var points = [];
-        var i, theta;
-        for (i = 0; i < 3; i += 1) {
-            theta = Math.PI / 2 + i * (2 * Math.PI / 3);
-            points.push([200 + r * Math.cos(theta), 200 + r * Math.sin(theta)]);
-        }
-        return points;  // */
-
-        /* Diamond
-        return [
-            [150, 50],
-            [250, 150],
-            [150, 250],
-            [50, 150]
-        ]; // */
-
-        /* Scalene triangle
-        return [
-            [50, 110],
-            [250, 140],
-            [10, 200]
-        ]; // */
-    };
-
     var leftBulgeTriangle = function(segment) {
         var displacement = [segment[1][0] - segment[0][0], segment[1][1] - segment[0][1]];
         var a = [segment[0][0] + 1 * displacement[0] / 3, segment[0][1] + 1 * displacement[1] / 3];
         var c = [segment[0][0] + 2 * displacement[0] / 3, segment[0][1] + 2 * displacement[1] / 3];
-        var theta = angle(a, c) - Math.PI / 2;
+        var theta = angle(a, c) - Math.PI / 3;
         var d = Math.sqrt(Math.pow(c[0] - a[0], 2) + Math.pow(c[1] - a[1], 2));
-        var midpoint = [(segment[0][0] + segment[1][0]) / 2, (segment[0][1] + segment[1][1]) / 2];;
-        var b = [midpoint[0] + d * Math.cos(theta), midpoint[1] + d * Math.sin(theta)];
+        var b = [a[0] + d * Math.cos(theta), a[1] + d * Math.sin(theta)];
         return [a, b, c];
     };
 
@@ -97,7 +97,7 @@ var snowflake = function(iterations) {
         return next;
     };
 
-    var points = base();
+    var points = equilateralTriangle();
     var i;
     for (i = 0; i < iterations; i += 1) {
         points = snowflakeIteration(points);
