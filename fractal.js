@@ -42,15 +42,6 @@ var angle = function(from, to) {
     return theta;
 };
 
-var diamond = function() {
-    return [
-        [150, 50],
-        [250, 150],
-        [150, 250],
-        [50, 150]
-    ];
-};
-
 var scaleneTriangle = function() {
     return [
         [50, 110],
@@ -67,13 +58,16 @@ var pointy = function() {
     ];
 };
 
-var equilateralTriangle = function() {
+var equilateralTriangle = function() { return regularPolygon(3); }
+var diamond = function() { return regularPolygon(4); }
+
+var regularPolygon = function(sides) {
     var r = 100;
     var points = [];
     var i, theta;
-    for (i = 0; i < 3; i += 1) {
-        theta = Math.PI / 2 + i * (2 * Math.PI / 3);
-        points.push([200 + r * Math.cos(theta), 200 + r * Math.sin(theta)]);
+    for (i = 0; i < sides; i += 1) {
+        theta = Math.PI / 2 + i * (2 * Math.PI / sides);
+        points.push([200 + r * Math.cos(theta), 150 + r * Math.sin(theta)]);
     }
     return points;
 };
@@ -104,7 +98,7 @@ var snowflake = function(iterations) {
         return next;
     };
 
-    var points = diamond();
+    var points = regularPolygon(3);
     var i;
     for (i = 0; i < iterations; i += 1) {
         points = snowflakeIteration(points);
