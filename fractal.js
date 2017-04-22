@@ -45,20 +45,30 @@ var angle = function(p1, p2) {
 
 var snowflake = function(iterations) {
     var base = function() {
-        /*
+        //* Equilateral triangle
+        var r = 100;
+        var points = [];
+        var i, theta;
+        for (i = 0; i < 3; i += 1) {
+            theta = Math.PI / 2 + i * (2 * Math.PI / 3);
+            points.push([200 + r * Math.cos(theta), 200 + r * Math.sin(theta)]);
+        }
+        return points;  // */
+
+        /* Diamond
         return [
             [150, 50],
             [250, 150],
             [150, 250],
             [50, 150]
-        ];
-       // */
+        ]; // */
+
+        /* Scalene triangle
         return [
             [50, 110],
             [250, 140],
             [10, 200]
-        ];
-       // */
+        ]; // */
     };
 
     var leftBulgeTriangle = function(segment) {

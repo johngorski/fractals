@@ -11,11 +11,17 @@
 <script>
 "use strict";
 
-var iterations = 3;
+var iterations = 0;
 var canvas = document.getElementById("canvas");
+snowflake(iterations)(canvas);
 
-var draw = snowflake(iterations);
-draw(canvas);
+canvas.addEventListener('click', function() {
+    iterations += 1;
+    if (iterations < 8) {
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        snowflake(iterations)(canvas);
+    }
+});
 </script>
 </body>
 </html>
