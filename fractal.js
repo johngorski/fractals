@@ -98,6 +98,15 @@ var vSum = function(va, vb) {
     }, []);
 };
 
+var square = function() {
+    return [
+        [100, 50],
+        [300, 50],
+        [300, 250],
+        [100, 250]
+    ];
+};
+
 var snowflake = function(iterations) {
     var leftBulgeTriangle = function(segment) {
         var x = displacement(segment[0], segment[1]);
@@ -126,7 +135,7 @@ var snowflake = function(iterations) {
         return next;
     };
 
-    var points = regularPolygon(3);
+    var points = square();
     var i;
     for (i = 0; i < iterations; i += 1) {
         points = snowflakeIteration(points);
