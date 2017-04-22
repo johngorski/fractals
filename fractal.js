@@ -72,14 +72,42 @@ var regularPolygon = function(sides) {
     return points;
 };
 
+var displacement = function(from, to) {
+    return to.reduce(function(vector, __, dimension) {
+        return vector.concat([to[dimension] - from[dimension]]);
+    }, []);
+};
+
+var magnitude = function(x) {
+    return Math.sqrt(
+        x.map(function(a) {
+            return a * a;
+        }).reduce(function(a, b) {
+            return a + b;
+        }, 0)
+    );
+};
+
+var scale = function(scalar, vector) {
+    return vector.map(function(dimension) {return scalar * dimension;});
+};
+
+var vSum = function(va, vb) {
+    return vb.reduce(function(v, __, dimension) {
+        return v.concat([va[dimension] + vb[dimension]]);
+    }, []);
+};
+
 var snowflake = function(iterations) {
     var leftBulgeTriangle = function(segment) {
-        var displacement = [segment[1][0] - segment[0][0], segment[1][1] - segment[0][1]];
-        var a = [segment[0][0] + 1 * displacement[0] / 3, segment[0][1] + 1 * displacement[1] / 3];
-        var c = [segment[0][0] + 2 * displacement[0] / 3, segment[0][1] + 2 * displacement[1] / 3];
-        var theta = angle(a, c) - Math.PI / 3;
-        var d = Math.sqrt(Math.pow(c[0] - a[0], 2) + Math.pow(c[1] - a[1], 2));
-        var b = [a[0] + d * Math.cos(theta), a[1] + d * Math.sin(theta)];
+        var x = displacement(segment[0], segment[1]);
+        var pointAlong = function(w) {
+            return vSum(segment[0], scale(w, x));
+        };
+        var a = pointAlong(1.0 / 3);
+        var c = pointAlong(2.0 / 3);
+        var deflection = angle(a, c) - Math.PI / 3;
+        var b = vSum(a, scale(magnitude(displacement(a, c)), [Math.cos, Math.sin].map(function(f) { return f(deflection); })));
         return [a, b, c];
     };
 
