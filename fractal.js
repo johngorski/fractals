@@ -2,14 +2,13 @@
 
 var pathFromPoints = function(points) {
     return function(canvas) {
-        var i;
         var context = canvas.getContext('2d');
+
         context.beginPath();
-        context.moveTo(points[0][0], points[0][1]);
-        for (i = 1; i < points.length; i += 1) {
-            context.lineTo(points[i][0], points[i][1]);
-        }
-        context.lineTo(points[0][0], points[0][1]);
+        context.moveTo(points[points.length - 1][0], points[points.length - 1][1]);
+        points.forEach(function(point) {
+            context.lineTo(point[0], point[1]);
+        });
         context.stroke();
     };
 };
@@ -24,18 +23,18 @@ var segments = function(points) {
     return segs;
 };
 
-var angle = function(p1, p2) {
-    var run = p2[0] - p1[0];
+var angle = function(from, to) {
+    var run = to[0] - from[0];
     if (run === 0) {
-        if (p2[1] > p1[1]) {
+        if (to[1] > from[1]) {
             return Math.PI / 2;
-        } else if (p2[1] < p1[1]) {
+        } else if (to[1] < from[1]) {
             return -Math.PI / 2;
         } else {
             return 0 / 0;
         }
     }
-    var rise = p2[1] - p1[1];
+    var rise = to[1] - from[1];
     var theta = Math.atan(rise / run);
     if (run < 0) {
         theta += Math.PI;
@@ -57,6 +56,14 @@ var scaleneTriangle = function() {
         [50, 110],
         [250, 140],
         [10, 200]
+    ];
+};
+
+var pointy = function() {
+    return [
+        [0, 0],
+        [395, 290],
+        [390, 295]
     ];
 };
 
@@ -97,7 +104,7 @@ var snowflake = function(iterations) {
         return next;
     };
 
-    var points = equilateralTriangle();
+    var points = diamond();
     var i;
     for (i = 0; i < iterations; i += 1) {
         points = snowflakeIteration(points);
