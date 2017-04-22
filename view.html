@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fun with fractals</title>
+</head>
+<body>
+<div align="center">
+<canvas id="canvas" width="400" height="300"></canvas>
+</div>
+<script src="fractal.js"></script>
+<script>
+"use strict";
+
+var iterations = 3;
+var canvas = document.getElementById("canvas");
+
+var draw = snowflake(iterations);
+draw(canvas);
+</script>
+</body>
+</html>
