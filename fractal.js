@@ -58,9 +58,6 @@ var pointy = function() {
     ];
 };
 
-var equilateralTriangle = function() { return regularPolygon(3); }
-var diamond = function() { return regularPolygon(4); }
-
 var regularPolygon = function(sides) {
     var r = 100;
     var points = [];
@@ -72,10 +69,16 @@ var regularPolygon = function(sides) {
     return points;
 };
 
+var zip = function(va, vb) {
+    return function(f) {
+        return vb.reduce(function(vector, __, dimension) {
+            return vector.concat(f(va[dimension], vb[dimension]));
+        }, []);
+    };
+};
+
 var displacement = function(from, to) {
-    return to.reduce(function(vector, __, dimension) {
-        return vector.concat([to[dimension] - from[dimension]]);
-    }, []);
+    return zip(from, to)(function(f, t) { return t - f; });
 };
 
 var magnitude = function(x) {
@@ -93,9 +96,7 @@ var scale = function(scalar, vector) {
 };
 
 var vSum = function(va, vb) {
-    return vb.reduce(function(v, __, dimension) {
-        return v.concat([va[dimension] + vb[dimension]]);
-    }, []);
+    return zip(va, vb)(function(a, b) { return a + b; });
 };
 
 var square = function() {
@@ -135,7 +136,7 @@ var snowflake = function(iterations) {
         return next;
     };
 
-    var points = square();
+    var points = regularPolygon(3);
     var i;
     for (i = 0; i < iterations; i += 1) {
         points = snowflakeIteration(points);
