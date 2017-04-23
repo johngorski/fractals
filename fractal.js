@@ -108,7 +108,7 @@ var square = function() {
     ];
 };
 
-var snowflake = function(iterations) {
+var snowflake = function(base, iterations) {
     var leftBulgeTriangle = function(segment) {
         var x = displacement(segment[0], segment[1]);
         var pointAlong = function(w) {
@@ -136,7 +136,7 @@ var snowflake = function(iterations) {
         return next;
     };
 
-    var points = regularPolygon(3);
+    var points = base;
     var i;
     for (i = 0; i < iterations; i += 1) {
         points = snowflakeIteration(points);
